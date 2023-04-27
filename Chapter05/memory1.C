@@ -28,7 +28,7 @@ TEST(Memory, Leak1) {
     EXPECT_EQ(1, object_counter::all_count);
     (void)p;
     //delete p;
-    EXPECT_EQ(0, object_counter::count);
+    EXPECT_EQ(1, object_counter::count);
     EXPECT_EQ(1, object_counter::all_count);
 }
 
@@ -39,7 +39,7 @@ TEST(Memory, Leak2) {
         break;  // Early exit
         delete p;
     } while (false);
-    EXPECT_EQ(0, object_counter::count);
+    EXPECT_EQ(1, object_counter::count);
     EXPECT_EQ(1, object_counter::all_count);
 }
 
@@ -54,6 +54,6 @@ TEST(Memory, Leak3) {
         delete p;
     } catch ( my_exception& e ) {
     }
-    EXPECT_EQ(0, object_counter::count);
+    EXPECT_EQ(1, object_counter::count);
     EXPECT_EQ(1, object_counter::all_count);
 }

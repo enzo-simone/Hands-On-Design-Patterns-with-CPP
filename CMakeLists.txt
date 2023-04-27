@@ -18,3 +18,4 @@ project(
 enable_testing()
 
 add_subdirectory(Chapter04)
+add_subdirectory(Chapter05)
