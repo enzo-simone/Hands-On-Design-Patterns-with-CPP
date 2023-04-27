@@ -5,9 +5,9 @@ class A {
     public:
     explicit A(int i) : i_(i) {}
     A(const A& rhs) : i_(rhs.i_) { std::cout << "A(const A&)" << std::endl; }
-    A(const A&& rhs) = delete;
+    //A(const A&& rhs) = delete;    // <|--- prevents compilation for std::swap from C++11 onward
     A& operator=(const A& rhs) { i_ = rhs.i_; std::cout << "A = A&" << std::endl; return *this; }
-    A& operator=(const A&& rhs) = delete;
+    //A& operator=(const A&& rhs) = delete; // <|--- prevents compilation for std::swap from C++11 onward
     int i_;
 };
 
