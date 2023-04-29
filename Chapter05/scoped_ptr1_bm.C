@@ -4,12 +4,8 @@
 
 #include "benchmark/benchmark.h"
 
-#define REPEAT2(x) x x
-#define REPEAT4(x) REPEAT2(x) REPEAT2(x)
-#define REPEAT8(x) REPEAT4(x) REPEAT4(x)
-#define REPEAT16(x) REPEAT8(x) REPEAT8(x)
-#define REPEAT32(x) REPEAT16(x) REPEAT16(x)
-#define REPEAT(x) REPEAT32(x)
+#define REPS 1'000'000
+#define REPEAT(x) {for(int i = 0; i < REPS; ++i){x}}
 
 template <typename T>
 class scoped_ptr {
@@ -26,8 +22,7 @@ class scoped_ptr {
 
 void BM_rawptr_construct(benchmark::State& state) {
     for (auto _ : state) {
-        int* p = new int;
-        delete p;
+        REPEAT(int* p = new int; delete p;)
     }
     state.SetItemsProcessed(state.iterations());
 }
@@ -43,7 +38,7 @@ void BM_rawptr_dereference(benchmark::State& state) {
 
 void BM_scoped_ptr_construct(benchmark::State& state) {
     for (auto _ : state) {
-        scoped_ptr<int> p(new int);
+        REPEAT(scoped_ptr<int> p(new int);)
     }
     state.SetItemsProcessed(state.iterations());
 }
@@ -58,7 +53,7 @@ void BM_scoped_ptr_dereference(benchmark::State& state) {
 
 void BM_unique_ptr_construct(benchmark::State& state) {
     for (auto _ : state) {
-        std::unique_ptr<int> p(new int);
+        REPEAT(std::unique_ptr<int> p(new int);)
     }
     state.SetItemsProcessed(state.iterations());
 }

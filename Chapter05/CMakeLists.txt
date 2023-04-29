@@ -25,7 +25,7 @@ foreach(file memory1.C mutex1.C scoped_ptr1.C)
 endforeach()
 
 
-
+set(CMAKE_BUILD_TYPE "Release")
 # ### Google Benchmark
 set(BENCHMARK_ENABLE_GTEST_TESTS OFF)
 set(BENCHMARK_ENABLE_TESTING OFF)
