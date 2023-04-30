@@ -37,10 +37,11 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(googlebenchmark)
 # ###############
 
-set(target "${curr_dir}-scoped_ptr1_bm.C.exe")
+set(file "scoped_ptr1_bm.C")
+set(target "${curr_dir}-${file}.exe")
 add_executable(
     "${target}"
-    scoped_ptr1_bm.C
+    "${file}"
 )
 
 target_link_libraries(
