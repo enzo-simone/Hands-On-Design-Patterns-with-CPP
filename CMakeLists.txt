@@ -7,7 +7,7 @@
 # 26 New in version 3.25. C++26
 
 cmake_minimum_required(VERSION 3.20)
-set (CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED On)
 set(CMAKE_CXX_EXTENSIONS Off)
 
@@ -16,6 +16,19 @@ project(
   LANGUAGES C CXX)
 
 enable_testing()
+
+function(FetchLibrary url tag)
+  message("Fetching library ${url} @ ${tag}")
+  include(FetchContent)
+  set(library-name "${url}-${tag}")
+  string(REGEX REPLACE "\\.|/|\\:" "-" library-name "${library-name}")
+  FetchContent_Declare(
+    "${library-name}"
+    GIT_REPOSITORY "${url}"
+    GIT_TAG "${tag}")
+  FetchContent_MakeAvailable("${library-name}")
+  message("Fetching done")
+endfunction()
 
 add_subdirectory(Chapter04)
 add_subdirectory(Chapter05)
