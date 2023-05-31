@@ -70,48 +70,39 @@ class D : public B<D> {
 };
 } // namespace static_polymorphism1
 
-void BM_none(benchmark::State& state) {
-    no_polymorphism::A* a = new no_polymorphism::A;
+template<typename T>
+inline void useObject(T& obj, benchmark::State& state) {
     int i = 0;
     for (auto _ : state) {
-        REPEAT(a->f(++i);)
+        REPEAT(obj->f(++i);)
     }
-    benchmark::DoNotOptimize(a->get());
+    auto res = obj->get();
+    benchmark::DoNotOptimize(res);
     state.SetItemsProcessed(32*state.iterations());
+}
+
+void BM_none(benchmark::State& state) {
+    no_polymorphism::A* a = new no_polymorphism::A;
+    useObject(a, state);
     delete a;
 }
 
 void BM_dynamic(benchmark::State& state) {
     dynamic_polymorphism::B* b = new dynamic_polymorphism::D;
-    int i = 0;
-    for (auto _ : state) {
-        REPEAT(b->f(++i);)
-    }
-    benchmark::DoNotOptimize(b->get());
-    state.SetItemsProcessed(32*state.iterations());
+    useObject(b, state);
     delete b;
 }
 
 void BM_static(benchmark::State& state) {
     static_polymorphism::B<static_polymorphism::D>* b = new static_polymorphism::D;
-    int i = 0;
-    for (auto _ : state) {
-        REPEAT(b->f(++i);)
-    }
-    benchmark::DoNotOptimize(b->get());
-    state.SetItemsProcessed(32*state.iterations());
+    useObject(b, state);
     delete b;
 }
 
 void BM_static1(benchmark::State& state) {
     static_polymorphism1::D d;
     static_polymorphism1::B<static_polymorphism1::D>* b = &d;
-    int i = 0;
-    for (auto _ : state) {
-        REPEAT(apply(b, i);)
-    }
-    benchmark::DoNotOptimize(b->get());
-    state.SetItemsProcessed(32*state.iterations());
+    useObject(b, state);
 }
 
 BENCHMARK(BM_none);
