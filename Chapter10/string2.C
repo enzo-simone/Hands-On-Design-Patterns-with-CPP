@@ -131,7 +131,8 @@ void BM_string_compare_short(benchmark::State& state) {
         }
     }
     for (auto _ : state) {
-        for (size_t i = 0; i < N; ++i) benchmark::DoNotOptimize(v1[i] == v2[i]);
+        bool b;
+        for (size_t i = 0; i < N; ++i) benchmark::DoNotOptimize(b = v1[i] == v2[i]);
     }
     state.SetItemsProcessed(N*state.iterations());
 }
